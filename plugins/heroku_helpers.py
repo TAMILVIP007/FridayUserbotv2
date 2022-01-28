@@ -91,7 +91,7 @@ async def set_varr(client, message, app_):
     if not _var:
         await msg_.edit("`Here is Usage Syntax : .setvar KEY VALUE`")
         return
-    if not " " in _var:
+    if " " not in _var:
         await msg_.edit("`Here is Usage Syntax : .setvar KEY VALUE`")
         return
     var_ = _var.split(" ", 1)
@@ -118,7 +118,7 @@ async def del_varr(client, message, app_):
     if not _var:
         await msg_.edit("`Give Var Name As Input!`")
         return
-    if not _var in heroku_var:
+    if _var not in heroku_var:
         await msg_.edit("`This Var Doesn't Exists!`")
         return
     await msg_.edit(f"`Sucessfully Deleted {_var} Var!`")

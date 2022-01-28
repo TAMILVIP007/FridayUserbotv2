@@ -20,7 +20,7 @@ from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, prog
     },
 )
 async def stats(client, message):
-    pablo = await edit_or_reply(message, f"`Processing...`")
+    pablo = await edit_or_reply(message, '`Processing...`')
     start = datetime.now()
     u = 0
     g = 0

@@ -57,9 +57,8 @@ async def lgo(client, message):
         await pablo.edit("`Invalid Tgs Sticker I Suppose.`")
         os.remove("tgs.tgs")
         return
-    json = open("json.json", "r")
-    jsn = json.read()
-    json.close()
+    with open("json.json", "r") as json:
+        jsn = json.read()
     jsn = (
         jsn.replace("[1]", "[2]")
         .replace("[2]", "[3]")
@@ -68,7 +67,7 @@ async def lgo(client, message):
         .replace("[5]", "[6]")
     )
     open("json.json", "w").write(jsn)
-    await runcmd(f"lottie_convert.py json.json tgs.tgs")
+    await runcmd('lottie_convert.py json.json tgs.tgs')
     await client.send_sticker(message.chat.id, "tgs.tgs")
     os.remove("json.json")
     os.remove(lol)

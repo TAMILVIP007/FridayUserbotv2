@@ -40,10 +40,7 @@ async def chnnlzip(client, message):
     media_count = 0
     text_count = 0
     os.makedirs(dirz)
-    if un:
-        chnnl = un
-    else:
-        chnnl = message.chat.id
+    chnnl = un or message.chat.id
     async for msg in client.search_messages(chnnl):
         if msg.sticker:
             rndmname = uuid.uuid4().hex
@@ -133,10 +130,7 @@ async def chnnlpdf(client, message):
     photo_count = 0
     text_count = 0
     os.makedirs(dirz)
-    if un:
-        chnnl = un
-    else:
-        chnnl = message.chat.id
+    chnnl = un or message.chat.id
     async for msg in client.search_messages(chnnl, filter="photo"):
         rndmname = uuid.uuid4().hex
         file_name = os.path.join(dirz + rndmname + ".jpg")
@@ -181,8 +175,10 @@ async def Download(client, message):
         return
     c_time = time.time()
     Escobar = await message.reply_to_message.download(
-        progress=progress, progress_args=(pablo, c_time, f"`Downloading This File!`")
+        progress=progress,
+        progress_args=(pablo, c_time, '`Downloading This File!`'),
     )
+
     await pablo.edit(f"Downloaded to `{Escobar}` Successfully!")
 
 
@@ -203,7 +199,7 @@ async def st(client, message):
         return
     await message.reply_to_message.download(file_name="./main_startup/Cache/thumb.jpg")
     await pablo.edit(
-        f"`Yay! Custom Thumb Set, All Files Will Be Sent With This Thumb!`"
+        '`Yay! Custom Thumb Set, All Files Will Be Sent With This Thumb!`'
     )
 
 
@@ -233,9 +229,7 @@ async def upload(client, message):
         await pablo.edit("`404 : File Not Found.`")
         return
     file_name = os.path.basename(file)
-    send_as_thumb = False
-    if os.path.exists("./main_startup/Cache/thumb.jpg"):
-        send_as_thumb = True
+    send_as_thumb = bool(os.path.exists("./main_startup/Cache/thumb.jpg"))
     size = os.stat(file).st_size
     if file.endswith(image_ext):
         # assume its image file

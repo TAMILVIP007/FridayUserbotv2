@@ -34,23 +34,17 @@ import mimetypes
 def guess_mime_type(file_):
     """Get Mime Type Of A File From Url / Path"""
     s = mimetypes.guess_type(file_)
-    if not s[0]:
-        return None
-    else:
-        return s[0]
+    return None if not s[0] else s[0]
 
 
 def get_user(message: Message, text: str) -> [int, str, None]:
     """Get User From Message"""
-    if text is None:
-        asplit = None
-    else:
-        asplit = text.split(" ", 1)
+    asplit = None if text is None else text.split(" ", 1)
     user_s = None
     reason_ = None
     if message.reply_to_message:
         user_s = message.reply_to_message.from_user.id
-        reason_ = text if text else None
+        reason_ = text or None
     elif asplit is None:
         return None, None
     elif len(asplit[0]) > 0:
@@ -104,10 +98,7 @@ def get_readable_time(seconds: int) -> int:
 
     while count < 4:
         count += 1
-        if count < 3:
-            remainder, result = divmod(seconds, 60)
-        else:
-            remainder, result = divmod(seconds, 24)
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
@@ -145,10 +136,7 @@ def paginate_help(page_number, loaded_modules, prefix, is_official=True):
     """Paginate Buttons"""
     number_of_rows = 6
     number_of_cols = 2
-    helpable_modules = []
-    for p in loaded_modules:
-        if not p.startswith("_"):
-            helpable_modules.append(p)
+    helpable_modules = [p for p in loaded_modules if not p.startswith("_")]
     helpable_modules = sorted(helpable_modules)
     modules = [
         InlineKeyboardButton(
@@ -177,7 +165,9 @@ def paginate_help(page_number, loaded_modules, prefix, is_official=True):
                         prefix, modulo_page, is_official
                     ),
                 ),
-                InlineKeyboardButton(text="Back 🔙", callback_data=f"backO_to_help_menu"),
+                InlineKeyboardButton(
+                    text="Back 🔙", callback_data='backO_to_help_menu'
+                ),
                 InlineKeyboardButton(
                     text="Next ⏩",
                     callback_data="{}_next({})_{}".format(
@@ -186,6 +176,7 @@ def paginate_help(page_number, loaded_modules, prefix, is_official=True):
                 ),
             )
         ]
+
     return pairs
 
 
@@ -206,7 +197,7 @@ def cb_wrapper(func):
             except Exception as e:
                 print(format_exc())
                 await cb.answer(
-                    f"Oh No, SomeThing Isn't Right. Please Check Logs!",
+                    "Oh No, SomeThing Isn't Right. Please Check Logs!",
                     cache_time=0,
                     show_alert=True,
                 )
@@ -288,9 +279,10 @@ async def progress(current, total, message, start, type_of_ps, file_name=None):
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "{0}{1} {2}%\n".format(
             "".join(["▰" for i in range(math.floor(percentage / 10))]),
-            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            "".join(["▱" for _ in range(10 - math.floor(percentage / 10))]),
             round(percentage, 2),
         )
+
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
@@ -326,9 +318,10 @@ async def cb_progress(current, total, cb, start, type_of_ps, file_name=None):
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "{0}{1} {2}%\n".format(
             "".join(["▰" for i in range(math.floor(percentage / 10))]),
-            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            "".join(["▱" for _ in range(10 - math.floor(percentage / 10))]),
             round(percentage, 2),
         )
+
         tmp = progress_str + "{0} of {1}\nETA: {2}".format(
             humanbytes(current), humanbytes(total), time_formatter(estimated_total_time)
         )
@@ -355,12 +348,11 @@ def get_text(message: Message) -> [None, str]:
     text_to_return = message.text
     if message.text is None:
         return None
-    if " " in text_to_return:
-        try:
-            return message.text.split(None, 1)[1]
-        except IndexError:
-            return None
-    else:
+    if " " not in text_to_return:
+        return None
+    try:
+        return message.text.split(None, 1)[1]
+    except IndexError:
         return None
 
 
@@ -391,17 +383,16 @@ async def edit_or_send_as_file(
     if not text:
         await message.edit("`Wait, What?`")
         return
-    if len(text) > 1024:
-        await message.edit("`OutPut is Too Large, Sending As File!`")
-        file_names = f"{file_name}.text"
-        open(file_names, "w").write(text)
-        await client.send_document(message.chat.id, file_names, caption=caption)
-        await message.delete()
-        if os.path.exists(file_names):
-            os.remove(file_names)
-        return
-    else:
+    if len(text) <= 1024:
         return await message.edit(text, parse_mode=parse_mode)
+    await message.edit("`OutPut is Too Large, Sending As File!`")
+    file_names = f"{file_name}.text"
+    open(file_names, "w").write(text)
+    await client.send_document(message.chat.id, file_names, caption=caption)
+    await message.delete()
+    if os.path.exists(file_names):
+        os.remove(file_names)
+    return
 
 
 async def iter_chats(client):
@@ -426,15 +417,19 @@ async def fetch_audio(client, message):
     if warner_stark.video:
         await message.edit("`Video Detected, Converting To Audio !`")
         warner_bros = await message.reply_to_message.download(
-            progress=progress, progress_args=(message, c_time, f"`Downloading Audio!`")
+            progress=progress,
+            progress_args=(message, c_time, '`Downloading Audio!`'),
         )
+
         stark_cmd = f"ffmpeg -i {warner_bros} -map 0:a friday.mp3"
         await runcmd(stark_cmd)
         final_warner = "friday.mp3"
     elif warner_stark.audio:
         await message.edit("`Download Started !`")
         final_warner = await message.reply_to_message.download(
-            progress=progress, progress_args=(message, c_time, f"`Downloading Video!`")
+            progress=progress,
+            progress_args=(message, c_time, '`Downloading Video!`'),
         )
+
     await message.edit("`Almost Done!`")
     return final_warner

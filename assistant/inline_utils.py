@@ -65,7 +65,7 @@ BRANCH_ = Config.U_BRANCH
 async def owo(client, inline_query):
     string_given = inline_query.query.lower()
     if string_given.startswith("not4u"):
-        if not ";" in string_given:
+        if ";" not in string_given:
             return
         ok = string_given.split(" ", maxsplit=1)[1]
         user, msg = ok.split(";")
@@ -178,7 +178,7 @@ async def owo(client, inline_query):
             if qw.get("created_at"):
                 txt += f'\n<b>Created At :</b> <code>{qw.get("created_at")}</code>'
             if qw.get("archived") == True:
-                txt += f"\n<b>This Project is Archived</b>"
+                txt += '\n<b>This Project is Archived</b>'
 
             results.append(
                 InlineQueryResultArticle(
@@ -191,7 +191,7 @@ async def owo(client, inline_query):
              )
         await client.answer_inline_query(inline_query.id, cache_time=0, results=results)
     elif string_given.startswith("whisper"):
-        if not ";" in string_given:
+        if ";" not in string_given:
             return
         ok = string_given.split(" ", maxsplit=1)[1]
         user, msg = ok.split(";")
@@ -234,25 +234,22 @@ async def owo(client, inline_query):
         bttn = [
             [
                 InlineKeyboardButton(
-                    text="Command Help", callback_data=f"make_cmd_buttons"
+                    text="Command Help", callback_data='make_cmd_buttons'
                 )
             ],
             [
-             InlineKeyboardButton(
-                    text="Restart UserBot", callback_data=f"restart_bot"
-                )
-            ],  
-            [
-             InlineKeyboardButton(
-                    text="Update UserBot", callback_data=f"updTe_bot"
+                InlineKeyboardButton(
+                    text="Restart UserBot", callback_data='restart_bot'
                 )
             ],
             [
-             InlineKeyboardButton(
-                    text="SyS Info", callback_data=f"sys_info"
+                InlineKeyboardButton(
+                    text="Update UserBot", callback_data='updTe_bot'
                 )
             ],
+            [InlineKeyboardButton(text="SyS Info", callback_data='sys_info')],
         ]
+
         if Config.LOAD_UNOFFICIAL_PLUGINS:
             total_ = len(XTRA_CMD_LIST) + len(CMD_LIST)
         nice_text = f"**FridayUserBot Commands** \n**Friday Version :** __{friday_version}__ \n**PyroGram Version :** __{__version__}__ \n**Total Plugins Loaded :** __{total_}__"
@@ -353,27 +350,24 @@ async def nothing_here(client, cb):
 async def black_menu(client, cb):
     total_ = len(CMD_LIST)
     bttn = [
-            [
-                InlineKeyboardButton(
-                    text="Command Help", callback_data=f"make_cmd_buttons"
-                )
-            ],
-            [
-             InlineKeyboardButton(
-                    text="Restart UserBot", callback_data=f"restart_bot"
-                )
-            ],  
-            [
-             InlineKeyboardButton(
-                    text="Update UserBot", callback_data=f"updTe_bot"
-                )
-            ],
-            [
-             InlineKeyboardButton(
-                    text="SyS Info", callback_data=f"sys_info"
-                )
-            ],
-        ]
+        [
+            InlineKeyboardButton(
+                text="Command Help", callback_data='make_cmd_buttons'
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Restart UserBot", callback_data='restart_bot'
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Update UserBot", callback_data='updTe_bot'
+            )
+        ],
+        [InlineKeyboardButton(text="SyS Info", callback_data='sys_info')],
+    ]
+
     if Config.LOAD_UNOFFICIAL_PLUGINS:
         total_ = len(XTRA_CMD_LIST) + len(CMD_LIST)
     nice_text = f"**FridayUserBot Commands** \n**Friday Version :** __{friday_version}__ \n**PyroGram Version :** __{__version__}__ \n**Total Plugins Loaded :** __{total_}__"
@@ -383,38 +377,41 @@ async def black_menu(client, cb):
 @cb_wrapper
 async def cmd_buutton(client, cb):
     bttn = [
+        [
+            InlineKeyboardButton(
+                text="Main Command Help",
+                callback_data='make_basic_button_True',
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Back 🔙", callback_data=f"backO_to_help_menu"
+            )
+        ],
+    ]
+
+    if Config.LOAD_UNOFFICIAL_PLUGINS:
+        total_ = len(XTRA_CMD_LIST) + len(CMD_LIST)
+        bttn = [
             [
                 InlineKeyboardButton(
-                    text="Main Command Help", callback_data=f"make_basic_button_True"
+                    text="Xtra Command Help",
+                    callback_data='make_basic_button_False',
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="Back 🔙", callback_data=f"backO_to_help_menu"
+                    text="Main Command Help",
+                    callback_data='make_basic_button_True',
                 )
-            ]
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Back 🔙", callback_data='backO_to_help_menu'
+                )
+            ],
         ]
-    if Config.LOAD_UNOFFICIAL_PLUGINS:
-        total_ = len(XTRA_CMD_LIST) + len(CMD_LIST)
-        bttn = [
-                [
-                    InlineKeyboardButton(
-                        text="Xtra Command Help",
-                        callback_data=f"make_basic_button_False",
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        text="Main Command Help",
-                        callback_data=f"make_basic_button_True",
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        text="Back 🔙", callback_data=f"backO_to_help_menu"
-                    )
-                ]
-            ]
+
     await cb.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(bttn))
 
 @bot.on_callback_query(filters.regex(pattern="restart_bot"))
@@ -422,11 +419,12 @@ async def cmd_buutton(client, cb):
 async def roaststart(client, cb):
     bttn = [
         [
-                InlineKeyboardButton(
-                    text="Back 🔙", callback_data=f"backO_to_help_menu"
-                )
-            ]
+            InlineKeyboardButton(
+                text="Back 🔙", callback_data='backO_to_help_menu'
+            )
+        ]
     ]
+
     await cb.edit_message_text("`Please Wait, Restarting... This May Take A While`", reply_markup=InlineKeyboardMarkup(bttn))
     args = [sys.executable, "-m", "main_startup"]
     execle(sys.executable, *args, environ)
@@ -437,11 +435,12 @@ async def roaststart(client, cb):
 async def update_it(client, cb):
     bttn = [
         [
-                InlineKeyboardButton(
-                    text="Back 🔙", callback_data=f"backO_to_help_menu"
-                )
-            ]
+            InlineKeyboardButton(
+                text="Back 🔙", callback_data='backO_to_help_menu'
+            )
+        ]
     ]
+
     await cb.edit_message_text("`Updating Please Wait!`", reply_markup=InlineKeyboardMarkup(bttn))
     try:
         repo = Repo()
@@ -542,15 +541,12 @@ async def fuck_arch_btw(client, cb):
 @bot.on_callback_query(filters.regex(pattern="make_basic_button_(True|False)"))
 @cb_wrapper
 async def wow_nice(client, cb):
-    nice = True
-    if cb.matches[0].group(1) == "False":
-        nice = False
-    if nice is False:
-        v_t = XTRA_CMD_LIST
-        bttn = paginate_help(0, XTRA_CMD_LIST, "helpme", is_official=nice)
-    else:
+    if nice := cb.matches[0].group(1) != "False":
         v_t = CMD_LIST
         bttn = paginate_help(0, CMD_LIST, "helpme", is_official=nice)
+    else:
+        v_t = XTRA_CMD_LIST
+        bttn = paginate_help(0, XTRA_CMD_LIST, "helpme", is_official=nice)
     await cb.edit_message_text(
         f"Command List & Help \n**Total Commands :** `{len(v_t)}` \n**(C) @FRIDAYOT**",
         reply_markup=InlineKeyboardMarkup(bttn),
@@ -567,9 +563,7 @@ async def close_it_please(client, cb):
 @cb_wrapper
 async def get_back_vro(client, cb):
     page_number = int(cb.matches[0].group(1))
-    is_official = True
-    if cb.matches[0].group(2) == "False":
-        is_official = False
+    is_official = cb.matches[0].group(2) != "False"
     cmd_list = CMD_LIST if is_official else XTRA_CMD_LIST
     buttons = paginate_help(page_number, cmd_list, "helpme", is_official=is_official)
     nice_text = f"**FridayUserBot Commands & Help Menu!** \n\n**Friday Version :** __{friday_version}__ \n**PyroGram Version :** __{__version__}__ \n**Total Plugins Loaded :** __{len(CMD_LIST)}__"
@@ -580,9 +574,7 @@ async def get_back_vro(client, cb):
 @cb_wrapper
 async def give_plugin_cmds(client, cb):
     plugin_name, page_number = cb.matches[0].group(1).split("|", 1)
-    is_official = True
-    if cb.matches[0].group(2) == "False":
-        is_official = False
+    is_official = cb.matches[0].group(2) != "False"
     cmd_list = CMD_LIST if is_official else XTRA_CMD_LIST
     help_string = f"**💡 PLUGIN NAME 💡 :** `{plugin_name}` \n{cmd_list[plugin_name]}"
     help_string += "\n\n**(C) @FRIDAYOT** ".format(plugin_name)
@@ -605,9 +597,7 @@ async def give_plugin_cmds(client, cb):
 @cb_wrapper
 async def give_next_page(client, cb):
     current_page_number = int(cb.matches[0].group(1))
-    is_official = True
-    if cb.matches[0].group(2) == "False":
-        is_official = False
+    is_official = cb.matches[0].group(2) != "False"
     cmd_list = CMD_LIST if is_official else XTRA_CMD_LIST
     buttons = paginate_help(
         current_page_number + 1, cmd_list, "helpme", is_official=is_official
@@ -619,9 +609,7 @@ async def give_next_page(client, cb):
 @cb_wrapper
 async def give_old_page(client, cb):
     current_page_number = int(cb.matches[0].group(1))
-    is_official = True
-    if cb.matches[0].group(2) == "False":
-        is_official = False
+    is_official = cb.matches[0].group(2) != "False"
     cmd_list = CMD_LIST if is_official else XTRA_CMD_LIST
     buttons = paginate_help(
         current_page_number - 1, cmd_list, "helpme", is_official=is_official

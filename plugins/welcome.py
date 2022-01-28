@@ -29,7 +29,7 @@ async def save_welcome(client, message):
     msg = message.reply_to_message
     cool = await msg.copy(int(Config.LOG_GRP))
     await add_welcome(int(message.chat.id), cool.message_id)
-    await note_.edit(f"`Done! Welcome Message Saved!`")
+    await note_.edit('`Done! Welcome Message Saved!`')
 
 
 @listen(filters.new_chat_members & filters.group)
@@ -73,9 +73,18 @@ async def welcomenibba(client, message):
     
     
 async def is_media(message):
-    if not (message.photo or message.video or message.document or message.audio or message.sticker or message.animation or message.voice or message.video_note):
-        return False
-    return True
+    return bool(
+        (
+            message.photo
+            or message.video
+            or message.document
+            or message.audio
+            or message.sticker
+            or message.animation
+            or message.voice
+            or message.video_note
+        )
+    )
 
 
 @friday_on_cmd(
@@ -88,7 +97,7 @@ async def del_welcomez(client, message):
         await note_.edit("`Welcome Message Not Found In This Chat!`")
         return
     await del_welcome(int(message.chat.id))
-    await note_.edit(f"`Welcome Message Deleted Successfully!`")
+    await note_.edit('`Welcome Message Deleted Successfully!`')
 
 
 @friday_on_cmd(
@@ -101,7 +110,7 @@ async def show_welcome(client, message):
     if sed is False:
         await pablo.edit("`No Welcome Found In This Chat...`")
         return
-    mag = f""" Welcome Message In Correct Chat Is :"""
+    mag = ' Welcome Message In Correct Chat Is :'
     await client.copy_message(
         from_chat_id=int(Config.LOG_GRP),
         chat_id=int(message.chat.id),

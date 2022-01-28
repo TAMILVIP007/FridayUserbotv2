@@ -25,9 +25,7 @@ async def pabloescobar(client, message):
         pyrogram.raw.functions.channels.GetAdminedPublicChannels()
     )
     C = channels.chats
-    output_stre = ""
-    for x in C:
-        output_stre += f"{x.title}\n@{x.username}\n\n"
+    output_stre = "".join(f"{x.title}\n@{x.username}\n\n" for x in C)
     output_str = f"""I am Admin In All These Groups And Channels
 {output_stre}
 """

@@ -34,7 +34,7 @@ async def paste(client, message):
             m_list = open(file, "r").read()
             message_s = m_list
             os.remove(file)
-        elif message.reply_to_message.text:
+        else:
             message_s = message.reply_to_message.text
     key = (
         requests.post("https://nekobin.com/api/documents", json={"content": message_s})

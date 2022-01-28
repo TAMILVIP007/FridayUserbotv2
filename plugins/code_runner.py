@@ -110,18 +110,18 @@ async def eval(client, message):
     else:
         evaluation = "Success!"
     final_output = EVAL.format(code=cmd, result=evaluation)
-    if len(cmd) >= 1023:
-        capt = "Eval Result!"
-    else:
-        capt = cmd
+    capt = "Eval Result!" if len(cmd) >= 1023 else cmd
     await edit_or_send_as_file(final_output, stark, client, capt, "eval-result")
 
 
 async def aexec(code, client, message):
     exec(
-        f"async def __aexec(client, message): "
-        + "".join(f"\n {l}" for l in code.split("\n"))
+        (
+            'async def __aexec(client, message): '
+            + "".join(f"\n {l}" for l in code.split("\n"))
+        )
     )
+
     return await locals()["__aexec"](client, message)
 
 
@@ -144,7 +144,7 @@ async def any_lang_cmd_runner(client, message):
         return
     reply_code = message.reply_to_message.text
     lang = message.text.split(None, 1)[1]
-    if not lang.lower() in langs:
+    if lang.lower() not in langs:
         await stark.edit("`Invalid Language Selected!`")
         return
     if reply_code is None:
@@ -156,7 +156,7 @@ async def any_lang_cmd_runner(client, message):
         "token": "5b5f0ad8-705a-4118-87d4-c0ca29939aed",
     }
     r = requests.post("https://starkapis.herokuapp.com/compiler", data=data).json()
-    if r.get("reason") != None:
+    if r.get("reason") is None:
         iujwal = f"""**▶ Code :** \n`{reply_code}` 
 **▶ Result :** 
 `{r.get("results")}`
@@ -168,8 +168,6 @@ async def any_lang_cmd_runner(client, message):
  `{r.get("success")}`
 **▶ Warnings :** 
  `{r.get("warnings")}`
-**▶ Reason :**
- `{r.get("reason")}`
  """
     else:
         iujwal = f"""**▶ Code :** \n`{reply_code}` 
@@ -183,6 +181,8 @@ async def any_lang_cmd_runner(client, message):
  `{r.get("success")}`
 **▶ Warnings :** 
  `{r.get("warnings")}`
+**▶ Reason :**
+ `{r.get("reason")}`
  """
     await edit_or_send_as_file(
         iujwal, stark, client, "`Result of Your Code!`", "rc-result"

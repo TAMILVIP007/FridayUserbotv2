@@ -33,7 +33,7 @@ async def installer(client, message):
     if os.path.exists(os.path.join("./plugins/", file_name)):
         await pablo.edit("`This Plugin is Already Installed!`")
         return
-    if not ext.lower() == "py":
+    if ext.lower() != "py":
         await pablo.edit("`Only Py Files :(`")
         return
     Escobar = await message.reply_to_message.download(file_name="./plugins/")

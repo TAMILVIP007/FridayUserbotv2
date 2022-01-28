@@ -39,9 +39,7 @@ async def notes(client, message):
 
 @listen(filters.incoming & filters.regex("\#(\S+)"))
 async def lmao(client, message):
-    if await all_note(message.chat.id):
-        pass
-    else:
+    if not await all_note(message.chat.id):
         return
     owo = message.matches[0].group(1)
     if owo is None:
@@ -99,9 +97,7 @@ async def noteses(client, message):
     if poppy is False:
         await pablo.edit("`No Notes Found In This Chat...`")
         return
-    kk = ""
-    for Escobar in poppy:
-        kk += f"""\n~ `{Escobar.get("keyword")}`"""
+    kk = "".join(f"""\n~ `{Escobar.get("keyword")}`""" for Escobar in poppy)
     X = await client.get_chat(message.chat.id)
     grp_nme = X.title
     mag = f""" List Of Notes In {grp_nme}:

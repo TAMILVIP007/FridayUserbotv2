@@ -34,10 +34,7 @@ async def autopost(client, message):
     if not chnnl:
         await pablo.edit("`Provide Channel ID!`")
         return
-    if str(chnnl).startswith("-100"):
-        kk = str(chnnl).replace("-100", "")
-    else:
-        kk = chnnl
+    kk = str(chnnl).replace("-100", "") if str(chnnl).startswith("-100") else chnnl
     if not kk.isnumeric():
         try:
             u_ = await client.get_chat(kk)
@@ -66,10 +63,7 @@ async def rmautopost(client, message):
     if not chnnl:
         await pablo.edit("`Provide Channel ID!`")
         return
-    if str(chnnl).startswith("-100"):
-        kk = str(chnnl).replace("-100", "")
-    else:
-        kk = chnnl
+    kk = str(chnnl).replace("-100", "") if str(chnnl).startswith("-100") else chnnl
     if not kk.isnumeric():
         try:
             u_ = await client.get_chat(kk)

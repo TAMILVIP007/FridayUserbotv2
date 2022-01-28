@@ -94,7 +94,7 @@ async def dpins(client, message):
 )
 async def midhunadmin(client, message):
     mentions = ""
-    starky = get_text(message) if get_text(message) else message.chat.id
+    starky = get_text(message) or message.chat.id
     pablo = await edit_or_reply(message, "`Searching For Admins!`")
     try:
         X = await client.get_chat_members(starky, filter="administrators")
@@ -107,7 +107,7 @@ async def midhunadmin(client, message):
             link = f'✱ <a href="tg://user?id={midhun.user.id}">{midhun.user.first_name}</a>'
             userid = f"<code>{midhun.user.id}</code>"
             mentions += f"\n{link} {userid}"
-    holy = ujwal.username if ujwal.username else ujwal.id
+    holy = ujwal.username or ujwal.id
     messag = f"""
 <b>Admins in {ujwal.title} | {holy}</b>
 
@@ -129,17 +129,15 @@ async def midhunadmin(client, message):
     cmd_help={"help": "Get List Of Bots In Chat!", "example": "{ch}botlist"},
 )
 async def bothub(client, message):
-    buts = "**Bot List** \n\n"
-    nos = 0
-    starky = get_text(message) if get_text(message) else message.chat.id
+    starky = get_text(message) or message.chat.id
     pablo = await edit_or_reply(message, "`Searching For Bots!`")
     try:
         bots = await client.get_chat_members(starky, filter="bots")
     except BaseException as e:
         await pablo.edit(f"Couldn't Fetch Chat Admins, \n**TraceBack :** `{e}`")
         return
-    for ujwal in bots:
-        nos += 1
+    buts = "**Bot List** \n\n"
+    for nos, ujwal in enumerate(bots, start=1):
         buts += f"{nos}〉 [{ujwal.user.first_name}](tg://user?id={ujwal.user.id}) \n"
     await pablo.edit(buts)
 
@@ -243,7 +241,7 @@ async def ban_world(client, message):
     try:
         user_ = await client.get_users(userz)
     except:
-        await bun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await bun.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     try:
         await client.kick_chat_member(message.chat.id, int(user_.id))
@@ -282,7 +280,7 @@ async def unban_world(client, message):
     try:
         user_ = await client.get_users(userm)
     except:
-        await unbun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await unbun.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     userz = user_.id
     if not reason:
@@ -326,7 +324,7 @@ async def ujwal_mote(client, message):
     try:
         user = await client.get_users(userl)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     userz = user.id
     if not Res:
@@ -382,7 +380,7 @@ async def ujwal_demote(client, message):
     try:
         user = await client.get_users(usero)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     userz = user.id
     if userz == me_m.id:
@@ -437,7 +435,7 @@ async def ujwal_mute(client, message):
     try:
         user = await client.get_users(userf)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     userz = user.id
     if userz == me_m.id:
@@ -482,7 +480,7 @@ async def ujwal_unmute(client, message):
     try:
         user = await client.get_users(userf)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     userz = user.id
     if userz == me_m.id:

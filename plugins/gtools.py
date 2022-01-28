@@ -41,7 +41,7 @@ async def gmute_him(client, message):
     try:
         userz = await client.get_users(user)
     except:
-        await g.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await g.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     if not reason:
         reason = "Just_Gmutted!"
@@ -81,7 +81,7 @@ async def gmute_him(client, message):
     try:
         userz = await client.get_users(user_)
     except:
-        await ug.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await ug.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     if userz.id == (client.me).id:
         await ug.edit("`Oh, This is So Funny Btw :/`")
@@ -117,7 +117,7 @@ async def gbun_him(client, message):
     try:
         userz = await client.get_users(user)
     except:
-        await gbun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await gbun.edit("`404 : User Doesn't Exists In This Chat !`")
         return
     if not reason:
         reason = "Private Reason!"
@@ -170,7 +170,7 @@ async def ungbun_him(client, message):
     try:
         userz = await client.get_users(user)
     except:
-        await ungbun.edit(f"`404 : User Doesn't Exists!`")
+        await ungbun.edit("`404 : User Doesn't Exists!`")
         return
     if userz.id == (client.me).id:
         await ungbun.edit("`Oh, This is So Funny Btw :/`")

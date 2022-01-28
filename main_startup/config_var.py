@@ -36,7 +36,7 @@ def fetch_heroku_git_url(api_key, app_name):
     return heroku_app.git_url.replace("https://", "https://api:" + api_key + "@")
 
 
-class Config(object):
+class Config((object)):
     API_ID = int(os.environ.get("API_ID", 1))
     API_HASH = os.environ.get("API_HASH", None)
     BOT_TOKEN = os.environ.get("BOT_TOKEN", None)
@@ -54,7 +54,7 @@ class Config(object):
     MONGO_DB = os.environ.get("MONGO_DB", None)
     LOG_GRP = int(os.environ.get("LOG_GRP", False))
     COMMAND_HANDLER = os.environ.get("COMMAND_HANDLER", ".")
-    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
+    SUDO_USERS = {int(x) for x in os.environ.get("SUDO_USERS", "").split()}
     AFS = list(SUDO_USERS)
     CUSTOM_HELP_EMOJI = os.environ.get("CUSTOM_HELP_EMOJI", "✘")
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
@@ -72,8 +72,8 @@ class Config(object):
     V_T_KEY = os.environ.get("VIRUSTOTAL_API_KEY", None)
     TAG_LOGGER = os.environ.get("TAG_LOGGER", False)
     PM_PSW = bool(strtobool(str(os.environ.get("PM_PSW", True))))
-    MAIN_NO_LOAD = [x for x in os.environ.get("MAIN_NO_LOAD", "").split(',')]
-    XTRA_NO_LOAD = [x for x in os.environ.get("XTRA_NO_LOAD", "").split(',')]
+    MAIN_NO_LOAD = list(os.environ.get("MAIN_NO_LOAD", "").split(','))
+    XTRA_NO_LOAD = list(os.environ.get("XTRA_NO_LOAD", "").split(','))
     DISABLED_SUDO_CMD_S = os.environ.get("DISABLED_SUDO_CMD_S", None)
     ENABLE_WAIFU_FOR_ALL_CHATS = bool(strtobool(str(os.environ.get("ENABLE_WAIFU_FOR_ALL_CHATS", False))))
     CHROME_DRIVER_PATH = os.environ.get("CHROME_DRIVER_PATH", "/usr/bin/chromedriver")

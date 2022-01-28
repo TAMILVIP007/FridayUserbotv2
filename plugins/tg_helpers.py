@@ -130,7 +130,7 @@ async def join_(client, message):
             f"`[Failed] - To Join Chat` \n**TraceBack :** `{e}`"
         )
         return
-    await owo.edit(f"`Sucessfully, Joined This Chat.`")
+    await owo.edit('`Sucessfully, Joined This Chat.`')
 
 @friday_on_cmd(
     ["leave"],
@@ -164,9 +164,10 @@ async def bleck_pic(client, message):
     ):
         await owo.edit("`Reply To Image / Video To Set As PPic`")
         return
-    is_video = False
-    if message.reply_to_message.video or message.reply_to_message.animation:
-        is_video = True
+    is_video = bool(
+        message.reply_to_message.video or message.reply_to_message.animation
+    )
+
     ppics = await message.reply_to_message.download()
     try:
         if is_video:
@@ -193,11 +194,11 @@ async def create_poll(client, message):
     if not poll_:
         await msg.edit("`Give Me Question & Options! See Help For More`")
         return
-    if not "|" in poll_:
+    if "|" not in poll_:
         await msg.edit("`Give Me Options :/`")
         return
     poll_q, poll_options = poll_.split("|")
-    if not "," in poll_options:
+    if "," not in poll_options:
         await msg.edit("`A Poll Needs 1+ Options!`")
         return
     option_s = poll_options.split(",")
@@ -214,10 +215,7 @@ async def create_poll(client, message):
 )
 async def dumb_er(client, message):
     ow = await edit_or_reply(message, "`Dumping...`")
-    if message.reply_to_message:
-        m_sg = message.reply_to_message
-    else:
-        m_sg = message
+    m_sg = message.reply_to_message or message
     owo = f"{m_sg}"
     await edit_or_send_as_file(owo, ow, client, "Json-Dump", "Dump", "md")
 
@@ -292,7 +290,7 @@ async def add_user_s_to_contact(client, message):
     try:
         user_ = await client.get_users(userk)
     except:
-        await msg_.edit(f"`404 : Unable To Get To This User!`")
+        await msg_.edit('`404 : Unable To Get To This User!`')
         return
     custom_name = get_text(message) or user_.first_name
     await client.add_contact(user_.id, custom_name)

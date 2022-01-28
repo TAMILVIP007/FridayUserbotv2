@@ -112,7 +112,7 @@ def friday_on_cmd(
                     TZ = pytz.timezone(Config.TZ)
                     datetime_tz = datetime.now(TZ)
                     text = "**!ERROR - REPORT!**\n\n"
-                    text += f"\n**Trace Back : ** `{str(format_exc())}`"
+                    text += f'\n**Trace Back : ** `{format_exc()}`'
                     text += f"\n**Plugin-Name :** `{func.__module__}`"
                     text += f"\n**Function Name :** `{func.__name__}` \n"
                     text += datetime_tz.strftime(
@@ -148,7 +148,7 @@ def listen(filter_s):
                 TZ = pytz.timezone(Config.TZ)
                 datetime_tz = datetime.now(TZ)
                 text = "**!ERROR WHILE HANDLING UPDATES!**\n\n"
-                text += f"\n**Trace Back : ** `{str(format_exc())}`"
+                text += f'\n**Trace Back : ** `{format_exc()}`'
                 text += f"\n**Plugin-Name :** `{func.__module__}`"
                 text += f"\n**Function Name :** `{func.__name__}` \n"
                 text += datetime_tz.strftime(
@@ -194,22 +194,20 @@ def add_help_menu(
             CMD_LIST[
                 file_name
             ] += f"\n\n**Command :** `{Config.COMMAND_HANDLER}{cmd}` \n**Help :** `{cmd_help}` \n**Example :** `{cmd_helpz}`"
+    elif file_name not in XTRA_CMD_LIST.keys():
+        XTRA_CMD_LIST[file_name] = cmd_helper
     else:
-        if file_name not in XTRA_CMD_LIST.keys():
-            XTRA_CMD_LIST[file_name] = cmd_helper
-        else:
-            XTRA_CMD_LIST[
-                file_name
-            ] += f"\n\n**Command :** `{Config.COMMAND_HANDLER}{cmd}` \n**Help :** `{cmd_help}` \n**Example :** `{cmd_helpz}`"
+        XTRA_CMD_LIST[
+            file_name
+        ] += f"\n\n**Command :** `{Config.COMMAND_HANDLER}{cmd}` \n**Help :** `{cmd_help}` \n**Example :** `{cmd_helpz}`"
             
 
 def add_handler(filter_s, func_, cmd):
-    d_c_l = Config.DISABLED_SUDO_CMD_S
-    if d_c_l:
+    if d_c_l := Config.DISABLED_SUDO_CMD_S:
         d_c_l = d_c_l.split(" ")
         d_c_l = list(d_c_l)
         if "dev" in d_c_l:
-            d_c_l.extend(['eval', 'bash', 'install']) 
+            d_c_l.extend(['eval', 'bash', 'install'])
         if any(item in list(d_c_l) for item in list(cmd)): 
             filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
     Friday.add_handler(MessageHandler(func_, filters=filter_s), group=0)

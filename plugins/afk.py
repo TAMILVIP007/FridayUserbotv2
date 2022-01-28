@@ -22,10 +22,7 @@ afk_sanity_check: dict = {}
 
 async def is_afk_(f, client, message):
     af_k_c = await check_afk()
-    if af_k_c:
-        return bool(True)
-    else:
-        return bool(False)
+    return bool(True) if af_k_c else bool(False)
 
 
 is_afk = filters.create(func=is_afk_, name="is_afk_")
@@ -54,11 +51,8 @@ async def set_afk(client, message):
         )
         await go_afk(afk_start, msge)
     else:
-        msg = f"**I Am Busy And I Am Going Afk**."
-        await log.log_msg(
-            client,
-            f"#AfkLogger Afk Is Active",
-        )
+        msg = '**I Am Busy And I Am Going Afk**.'
+        await log.log_msg(client, '#AfkLogger Afk Is Active')
         await go_afk(afk_start)
     await pablo.edit(msg)
 
